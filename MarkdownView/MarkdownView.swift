@@ -27,6 +27,8 @@ open class MarkdownView: UIView {
   public var onTouchLink: ((URLRequest) -> Bool)?
 
   public var onRendered: ((CGFloat) -> Void)?
+  
+  public var onScrolled: ((UIRectEdge) -> Void)?
 
   public convenience init() {
     self.init(frame: CGRect.zero)
@@ -42,7 +44,7 @@ open class MarkdownView: UIView {
 
   open override var intrinsicContentSize: CGSize {
     if let height = self.intrinsicContentHeight {
-        return CGSize(width: UIView.noIntrinsicMetric, height: height)
+      return CGSize(width: UIView.noIntrinsicMetric, height: height)
     } else {
       return CGSize.zero
     }
@@ -126,6 +128,18 @@ extension MarkdownView: WKNavigationDelegate {
       decisionHandler(.allow)
     }
 
+  }
+
+}
+
+extension MarkdownView: UIScrollViewDelegate {
+
+  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if scrollView.contentOffset.y == 0 {
+      onScrolled?(.top)
+    } else if scrollView.contentOffset.y == (scrollView.contentSize.height - scrollView.frame.height) {
+      onScrolled?(.bottom)
+    }
   }
 
 }
