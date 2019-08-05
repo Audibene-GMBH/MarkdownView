@@ -27,8 +27,6 @@ open class MarkdownView: UIView {
   public var onTouchLink: ((URLRequest) -> Bool)?
 
   public var onRendered: ((CGFloat) -> Void)?
-  
-  public var onScrolled: ((UIRectEdge) -> Void)?
 
   public convenience init() {
     self.init(frame: CGRect.zero)
@@ -99,6 +97,8 @@ open class MarkdownView: UIView {
   private func escape(markdown: String) -> String? {
     return markdown.addingPercentEncoding(withAllowedCharacters: CharacterSet.alphanumerics)
   }
+
+  public var onScrolled: ((UIRectEdge) -> Void)?
 
 }
 
